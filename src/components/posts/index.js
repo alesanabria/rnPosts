@@ -4,9 +4,7 @@ import {
   View,
   FlatList
 } from 'react-native';
-import {
-  getPosts
-} from 'rnPosts/src/actions/posts';
+import { getPosts } from 'rnPosts/src/actions/posts';
 import Post from './post';
 
 class Posts extends Component {

@@ -1,15 +1,16 @@
-import { fetchPosts } from '../api/posts';
 import AsyncStorage from '@react-native-community/async-storage';
+import { fetchPosts } from '../api/posts';
 
-export function getPosts() {
+export function getPosts(refresh = false) {
   return async (dispatch) => {
     try {
       let postsData = await AsyncStorage.getItem('posts');
       let posts = [];
 
-      if(postsData) {
+      if(postsData && !refresh) {
         posts = JSON.parse(postsData);
         await dispatch({ type: 'SET_POSTS', payload: posts });
+        return;
       }
 
       posts = await fetchPosts();
