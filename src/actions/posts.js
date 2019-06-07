@@ -33,21 +33,58 @@ export function getPosts(refresh = false) {
   }
 }
 
-export function readPost() {
+export function markReadPost(postId) {
   return async (dispatch, getState) => {
+    try {
+      await dispatch({ type: 'MARK_READ_POST', payload: postId });
+      const posts = getState().posts.entities;
+      await AsyncStorage.setItem('posts', JSON.stringify(posts));
+    } catch(err) {
+      console.log('mark read post err', err);
+    }
 
   }
 }
 
-export function addFavoritePost() {
+export function getFavorites() {
   return async (dispatch, getState) => {
+    try {
+      let favorites = [];
+      const favoritesData = await AsyncStorage.getItem('favorites');
+
+      if(favoritesData) {
+        favorites = JSON.parse(favoritesData);
+        await dispatch({ type: 'SET_FAVORITES', payload: favorites });
+      }
+
+    } catch(err) {
+      console.log('get favorites err', err);
+    }
 
   }
 }
 
-export function removeFavoritePost() {
+export function addFavoritePost(postId) {
   return async (dispatch, getState) => {
-
+    await dispatch({ type: 'ADD_FAVORITE_POST', payload: postId });
+    const favorites = getState().posts.favorites;
+    await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
   }
 }
 
+export function removeFavoritePost(postId) {
+  return async (dispatch, getState) => {
+    await dispatch({ type: 'REMOVE_FAVORITE_POST', payload: postId });
+    const favorites = getState().posts.favorites;
+    await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+}
+
+export function clearPosts() {
+  return async (dispatch) => {
+    await AsyncStorage.clear();
+    await dispatch({ type: 'CLEAR_POSTS' });
+    await dispatch({ type: 'CLEAR_FAVORITES' });
+
+  }
+}

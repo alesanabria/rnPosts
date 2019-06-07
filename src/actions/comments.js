@@ -14,6 +14,7 @@ export function getComments(postId) {
       }
 
       comments = await fetchComments(postId);
+      await AsyncStorage.setItem(`post-${postId}-comments`, JSON.stringify(comments));
       await dispatch({ type: 'SET_POST_COMMENTS', payload: { postId, comments } });
 
       return comments;

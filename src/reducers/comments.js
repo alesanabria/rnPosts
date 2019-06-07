@@ -6,7 +6,13 @@ const initialState = {
 function Comments(state = initialState, action) {
   switch(action.type) {
     case 'SET_POST_COMMENTS': {
-      return { ...state, [action.payload.postId]: action.payload.comments }
+      return {
+        ...state,
+        postComments: {
+          ...state.postComments,
+          [action.payload.postId]: action.payload.comments
+        }
+      }
     }
     default: {
       return state;

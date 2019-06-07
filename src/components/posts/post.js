@@ -4,10 +4,10 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 
 class Post extends PureComponent {
   render() {
-    const { post } = this.props;
+    const { post, goToPost } = this.props;
 
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity onPress={goToPost} style={styles.container}>
         {!post.read && <View style={styles.dot} />}
 
         <View style={styles.wrapper}>

@@ -9,14 +9,23 @@ function Posts(state = initialState, action) {
     case 'SET_POSTS': {
       return { ...state, entities: action.payload }
     }
-    case 'READ_POST': {
-      return state
+    case 'MARK_READ_POST': {
+      return {
+        ...state,
+        entities: state.entities.map(post => post.id == action.payload ? {...post, read: true} : post )
+      }
+    }
+    case 'SET_FAVORITES': {
+      return { ...state, favorites: action.payload }
     }
     case 'ADD_FAVORITE_POST': {
       return { ...state, favorites: state.favorites.concat([action.payload]) }
     }
-    case 'REMOVE_FAVORITE_POSTS': {
-      return { ...state, favorites: state.favorites.filter(id => id != action.payload) }
+    case 'REMOVE_FAVORITE_POST': {
+      return { ...state, favorites: state.favorites.filter(id => id !== action.payload) }
+    }
+    case 'CLEAR_POSTS': {
+      return { ...state, entities: [] }
     }
     default: {
       return state;
