@@ -24,7 +24,6 @@ class FavoriteBtn extends PureComponent {
 
   render() {
     const favorite = this.isFavorite();
-    console.log(this.props);
 
     return (
       <TouchableOpacity style={styles.btn} onPress={this.handleToggle}>

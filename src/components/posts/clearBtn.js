@@ -16,9 +16,11 @@ const ClearBtn = ({ onClear }) => {
       </TouchableOpacity>
     )
   } else {
-    <TouchableOpacity style={styles.btnFloat} onPress={onClear}>
+    return (
+      <TouchableOpacity style={styles.btnFloat} onPress={onClear}>
       <IonIcons name="md-trash" size={24} color="#fff" />
     </TouchableOpacity>
+    )
   }
 }
 
@@ -36,6 +38,12 @@ const styles = StyleSheet.create({
   },
   btnFloat: {
     backgroundColor: '#C02828',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 50,
     position: 'absolute',
     right: 16,
     bottom: 8,

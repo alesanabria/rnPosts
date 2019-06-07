@@ -5,9 +5,10 @@ import {
   SafeAreaView,
   StyleSheet
 } from 'react-native';
-import { getPosts, clearPosts, getFavorites } from 'rnPosts/src/actions/posts';
+import { getPosts, removePost, clearPosts, getFavorites } from 'rnPosts/src/actions/posts';
 import Post from './post';
 import ClearBtn from './clearBtn';
+import Tabs from './tabs';
 
 class Posts extends Component {
 
@@ -24,24 +25,45 @@ class Posts extends Component {
     this.props.navigation.navigate({ routeName: 'Post', params: { post } });
   }
 
+  handleDelete = (post) => {
+    this.props.dispatch(removePost(post.id));
+  }
+
   render() {
-    const { posts, favorites } = this.props;
+    const { posts, favorites, favoritesList } = this.props;
 
     console.log('favorites', favorites);
 
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
+        <Tabs>
+          <FlatList
+            style={{ flex: 1 }}
+            data={posts}
+            keyExtractor={(item) => `${item.id}`}
+            renderItem={({ item }) =>
+              <Post
+                onDelete={this.handleDelete.bind(null, item)}
+                goToPost={this.goToPost.bind(null, item)}
+                favorite={favorites.indexOf(item.id) != -1}
+                post={item}
+              />
+            }
+          />
+          <FlatList
           style={{ flex: 1 }}
-          data={posts}
+          data={favoritesList}
           keyExtractor={(item) => `${item.id}`}
           renderItem={({ item }) =>
             <Post
               goToPost={this.goToPost.bind(null, item)}
+              onDelete={this.handleDelete.bind(null, item)}
+              favorite={favorites.indexOf(item.id) != -1}
               post={item}
             />
           }
         />
+        </Tabs>
         <ClearBtn onClear={this.handleClear} />
       </SafeAreaView>
     )
@@ -57,10 +79,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   const { entities, favorites } = state.posts;
+  const favoritesList = entities.filter(post => favorites.indexOf(post.id) != -1);
 
   return {
     posts: entities,
-    favorites
+    favorites,
+    favoritesList
   }
 }
 

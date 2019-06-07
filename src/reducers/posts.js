@@ -15,6 +15,9 @@ function Posts(state = initialState, action) {
         entities: state.entities.map(post => post.id == action.payload ? {...post, read: true} : post )
       }
     }
+    case 'REMOVE_POST': {
+      return { ...state, entities: state.entities.filter(post => post.id !== action.payload) }
+    }
     case 'SET_FAVORITES': {
       return { ...state, favorites: action.payload }
     }
@@ -26,6 +29,9 @@ function Posts(state = initialState, action) {
     }
     case 'CLEAR_POSTS': {
       return { ...state, entities: [] }
+    }
+    case 'CLEAR_FAVORITES': {
+      return { ...state, favorites: [] }
     }
     default: {
       return state;

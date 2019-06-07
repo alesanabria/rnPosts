@@ -33,6 +33,12 @@ export function getPosts(refresh = false) {
   }
 }
 
+export function removePost(postId) {
+  return async (dispatch) => {
+    await dispatch({ type: 'REMOVE_POST', payload: postId });
+  }
+}
+
 export function markReadPost(postId) {
   return async (dispatch, getState) => {
     try {

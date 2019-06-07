@@ -10,6 +10,7 @@ PostsScreen.navigationOptions = ({ navigation }) => {
     headerRight: <RefreshBtn />,
     headerTintColor: '#fff',
     headerStyle: {
+      elevation: 0,
       backgroundColor: '#4DAB42'
     }
   }
