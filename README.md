@@ -6,13 +6,13 @@ I'm use flux architecture because help the app to be predictable, debuggable and
 
 This Architecture consists basically in three parts actions, reducers, store.
 
-- **Actions: events that dispatch new state.
+- **Actions:** events that dispatch new state.
 
-- **Reducers: pure functions that help to handle state a return a new one.
+- **Reducers:** pure functions that help to handle state a return a new one.
 
-- **Store: is where the state is.
+- **Store:** is where the state is stored, single source of truth.
 
-- **Components: handle the UI, the connected with redux are container and the others are presentational or dumb.
+- **Components:** handle the UI, the connected with redux are container and the others are presentational or dumb.
 
 
 ### third party
@@ -49,4 +49,16 @@ for android you need to open first the emulator from android studio or connect a
 ```
   react-native run-ios
   react-native run-android
+```
+
+## Tests
+
+open folder
+```
+  cd rnPosts
+```
+
+run tests
+```
+yarn test
 ```
