@@ -5,12 +5,22 @@ import {
   SafeAreaView,
   StyleSheet
 } from 'react-native';
-import { getPosts, removePost, clearPosts, getFavorites } from 'rnPosts/src/actions/posts';
+import {
+  getPosts,
+  removePost,
+  clearPosts,
+  getFavorites
+} from 'rnPosts/src/actions/posts';
 import Post from './post';
 import ClearBtn from './clearBtn';
 import Tabs from './tabs';
 
 class Posts extends Component {
+
+  state = {
+    refs: [],
+    canScroll: true
+  }
 
   componentDidMount() {
     this.props.dispatch(getPosts());
@@ -29,10 +39,13 @@ class Posts extends Component {
     this.props.dispatch(removePost(post.id));
   }
 
+  handleScroll = (canScroll) => {
+    this.setState({ canScroll });
+  }
+
   render() {
     const { posts, favorites, favoritesList } = this.props;
-
-    console.log('favorites', favorites);
+    const { canScroll } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -43,12 +56,14 @@ class Posts extends Component {
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) =>
               <Post
+                onMove={this.handleScroll}
                 onDelete={this.handleDelete.bind(null, item)}
                 goToPost={this.goToPost.bind(null, item)}
                 favorite={favorites.indexOf(item.id) != -1}
                 post={item}
               />
             }
+            scrollEnabled={canScroll}
           />
           <FlatList
           style={{ flex: 1 }}

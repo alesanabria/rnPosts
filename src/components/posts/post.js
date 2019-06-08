@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 import {
   View,
   Text,
@@ -8,100 +8,126 @@ import {
   Dimensions,
   PanResponder,
   Animated
-} from 'react-native';
-import IonIcons from 'react-native-vector-icons/Ionicons';
-const { width } = Dimensions.get('window');
+} from 'react-native'
+import IonIcons from 'react-native-vector-icons/Ionicons'
+const { width } = Dimensions.get('window')
 
 class Post extends PureComponent {
-
   moveX = new Animated.Value(width)
+  moveY = new Animated.Value(30)
   opacity = new Animated.Value(0)
 
   constructor(props) {
-    super(props);
+    super(props)
     this._panResponder = PanResponder.create({
-      onPanResponderTerminationRequest: () => true,
       onShouldBlockNativeResponder: (event, gestureState) => false,
       onPanResponderTerminationRequest: () => false,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-        return gestureState.dx != 0 && gestureState.dy != 0;
-   },
+        return Math.abs(gestureState.dx) > 5 && gestureState.dy != 0
+      },
+      onPanResponderStart: () => {
+        console.log('start move')
+        this.props.onMove && this.props.onMove(false)
+      },
+      onPanResponderGrant: () => {
+        console.log('start move')
+        this.props.onMove && this.props.onMove(false)
+      },
       onPanResponderMove: (e, gestureState) => {
         this.moveX.setValue(gestureState.moveX)
       },
       onPanResponderEnd: (e, gestureState) => {
-        const total = -width / 1.8;
+        this.props.onMove && this.props.onMove(true)
 
-        if(Math.abs(gestureState.dx) > Math.abs(total)) {
-          return this.props.onDelete();
+        const total = -width / 2
+
+        if (Math.abs(gestureState.dx) > Math.abs(total)) {
+          this.onRemove()
+          return
         }
 
-        this.moveX.setValue(width);
-      },
-
+        this.moveX.setValue(width)
+      }
     })
 
-    Animated.timing(this.opacity, {
-      toValue: 1,
-      duration: 250,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.opacity, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true
+      })
+      // Animated.timing(this.moveY, {
+      //   toValue: 0,
+      //   duration: 250,
+      //   useNativeDriver: true
+      // })
+    ]).start()
+  }
 
+  onRemove = () => {
+    Animated.parallel([
+      Animated.timing(this.opacity, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true
+      })
+    ]).start(() => this.props.onDelete())
   }
 
   render() {
-    const { post, favorite, goToPost } = this.props;
-    const to = width / 1.5;
+    const { post, favorite, goToPost } = this.props
+    const to = width / 1.5
 
     let swipe = this.moveX.interpolate({
       inputRange: [0, to],
       outputRange: [-to, 0],
-      extrapolate: "clamp",
-    });
+      extrapolate: 'clamp'
+    })
 
     return (
-
-      <Animated.View style={[
-        styles.container,
-        {
-          opacity: this.opacity,
-          transform: [{ translateX: swipe }, { translateY: this.opacity }],
-        }]}
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            opacity: this.opacity,
+            transform: [
+              { translateX: swipe },
+              { translateY: this.moveY },
+              { scaleX: this.opacity }
+            ]
+          }
+        ]}
         {...this._panResponder.panHandlers}
       >
-      <TouchableOpacity onPress={goToPost} style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-        {!post.read && <View style={styles.dot} />}
-
-        {(favorite && Platform.OS == 'ios') &&
-          <IonIcons
-            name="ios-star"
-            color="#F6E652"
-            size={16}
-          />
-        }
-
-        <View style={styles.wrapper}>
-          <Text style={styles.title}>{post.title}</Text>
-          {Platform.OS == 'ios' &&
-            <IonIcons
-              name="ios-arrow-forward"
-              color="#A8A7AC"
-              size={24}
-              style={styles.arrow}
-            />
+        <TouchableOpacity
+          onPress={goToPost}
+          style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+        >
+          {(!post.read && !favorite) &&
+            <View style={styles.dot} />
           }
 
-          {(favorite && Platform.OS == 'android') &&
-            <IonIcons
-              name="ios-star"
-              color="#F6E652"
-              size={16}
-            />
-          }
-        </View>
+          {favorite && Platform.OS == 'ios' && (
+            <IonIcons name="ios-star" color="#F6E652" size={16} />
+          )}
 
+          <View style={styles.wrapper}>
+            <Text style={styles.title}>{post.title}</Text>
+            {Platform.OS == 'ios' && (
+              <IonIcons
+                name="ios-arrow-forward"
+                color="#A8A7AC"
+                size={24}
+                style={styles.arrow}
+              />
+            )}
+
+            {favorite && Platform.OS == 'android' && (
+              <IonIcons name="ios-star" color="#F6E652" size={16} />
+            )}
+          </View>
         </TouchableOpacity>
-        </Animated.View>
-
+      </Animated.View>
     )
   }
 }
@@ -142,6 +168,6 @@ const styles = StyleSheet.create({
   arrow: {
     marginRight: 16
   }
-});
+})
 
-export default Post;
+export default Post

@@ -5,7 +5,6 @@ export function getUser(userId) {
   return async (dispatch) => {
     try {
       let user = {};
-      console.log('GET USER', userId);
       let userData = await AsyncStorage.getItem(`user-${userId}`);
 
       if(userData) {
