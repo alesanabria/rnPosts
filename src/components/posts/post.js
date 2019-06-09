@@ -14,8 +14,7 @@ const { width } = Dimensions.get('window');
 
 class Post extends PureComponent {
   moveX = new Animated.Value(width);
-  moveY = new Animated.Value(30);
-  opacity = new Animated.Value(0);
+  animate = new Animated.Value(0);
 
   constructor(props) {
     super(props);
@@ -51,22 +50,17 @@ class Post extends PureComponent {
     });
 
     Animated.parallel([
-      Animated.timing(this.opacity, {
+      Animated.timing(this.animate, {
         toValue: 1,
         duration: 250,
         useNativeDriver: true
       })
-      // Animated.timing(this.moveY, {
-      //   toValue: 0,
-      //   duration: 250,
-      //   useNativeDriver: true
-      // })
     ]).start();
   }
 
   onRemove = () => {
     Animated.parallel([
-      Animated.timing(this.opacity, {
+      Animated.timing(this.animate, {
         toValue: 0,
         duration: 250,
         useNativeDriver: true
@@ -89,11 +83,11 @@ class Post extends PureComponent {
         style={[
           styles.container,
           {
-            opacity: this.opacity,
+            opacity: this.animate,
             transform: [
               { translateX: swipe },
-              { translateY: this.moveY },
-              { scaleX: this.opacity }
+              { scaleX: this.animate },
+              { scaleY: this.animate  }
             ]
           }
         ]}

@@ -55,13 +55,13 @@ class PostsContainer extends Component {
             goToPost={this.goToPost}
           />
           <Favorites
-            favorites={favorites}
-            favoritesList={favoritesList}
-            canScroll={canScroll}
-            handleScroll={this.handleScroll}
-            handleDelete={this.handleDelete}
-            goToPost={this.goToPost}
-          />
+              favorites={favorites}
+              favoritesList={favoritesList}
+              canScroll={canScroll}
+              handleScroll={this.handleScroll}
+              handleDelete={this.handleDelete}
+              goToPost={this.goToPost}
+            />
         </Tabs>
         <ClearBtn onClear={this.handleClear} />
       </SafeAreaView>
