@@ -2,15 +2,15 @@
 
 ### Architecture
 
-I'm use flux architecture because help the app to be predictable, debuggable and well organized.
+I'm using flux architecture because help me to get that the app be be predictable, debuggable and well organized.
 
 This Architecture consists basically in three parts actions, reducers, store.
 
 - **Actions:** events that dispatch new state.
 
-- **Reducers:** pure functions that help to handle state a return a new one.
+- **Reducers:** pure functions that help to handle state and return a new one.
 
-- **Store:** is where the state is stored, single source of truth.
+- **Store:** is where all the state is stored, single source of truth.
 
 - **Components:** handle the UI, the connected with redux are container and the others are presentational or dumb.
 
@@ -19,13 +19,13 @@ This Architecture consists basically in three parts actions, reducers, store.
 
 - async-storage: it use under the hood sqlite, is fast and intuitive of use , use something like Real would be over killer, because the size of project.
 
-- redux: it's the best and most standardized implementation of flux, any new person to the react ecosystem
+- redux: it's the best and most standardized implementation of flux, any new person in the react ecosystem can get it right away or learn it from some many resources.
 
-- redux thunk
+- redux thunk: help to dispatch actions from actions, sounds a little weird but help a lot.
 
-- react-navigation: It help to navigate between screens, well documented, easy to implement and reason about.
+- react-navigation: help to navigate between screens, well documented, easy to implement and reason about it.
 
-- react-native-vector-icons: the only lib that give us a lot of icons to work.
+- react-native-vector-icons: the only lib that give us a lot of icons to work with.
 
 ## Installation
 
