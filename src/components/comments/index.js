@@ -35,8 +35,6 @@ const mapStateToProps = (state, props) => {
     ? postComments[props.postId]
     : [];
 
-    console.log(comments, postComments, props);
-
   return {
     comments
   }

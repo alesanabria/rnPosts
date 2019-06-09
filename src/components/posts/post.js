@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent } from 'react';
 import {
   View,
   Text,
@@ -8,47 +8,47 @@ import {
   Dimensions,
   PanResponder,
   Animated
-} from 'react-native'
-import IonIcons from 'react-native-vector-icons/Ionicons'
-const { width } = Dimensions.get('window')
+} from 'react-native';
+import IonIcons from 'react-native-vector-icons/Ionicons';
+const { width } = Dimensions.get('window');
 
 class Post extends PureComponent {
-  moveX = new Animated.Value(width)
-  moveY = new Animated.Value(30)
-  opacity = new Animated.Value(0)
+  moveX = new Animated.Value(width);
+  moveY = new Animated.Value(30);
+  opacity = new Animated.Value(0);
 
   constructor(props) {
-    super(props)
+    super(props);
     this._panResponder = PanResponder.create({
       onShouldBlockNativeResponder: (event, gestureState) => false,
       onPanResponderTerminationRequest: () => false,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 5 && gestureState.dy != 0
+        return Math.abs(gestureState.dx) > 5 && gestureState.dy != 0;
       },
       onPanResponderStart: () => {
-        console.log('start move')
-        this.props.onMove && this.props.onMove(false)
+        console.log('start move');
+        this.props.onMove && this.props.onMove(false);
       },
       onPanResponderGrant: () => {
-        console.log('start move')
-        this.props.onMove && this.props.onMove(false)
+        console.log('start move');
+        this.props.onMove && this.props.onMove(false);
       },
       onPanResponderMove: (e, gestureState) => {
-        this.moveX.setValue(gestureState.moveX)
+        this.moveX.setValue(gestureState.moveX);
       },
       onPanResponderEnd: (e, gestureState) => {
-        this.props.onMove && this.props.onMove(true)
+        this.props.onMove && this.props.onMove(true);
 
-        const total = -width / 2
+        const total = -width / 2;
 
         if (Math.abs(gestureState.dx) > Math.abs(total)) {
-          this.onRemove()
-          return
+          this.onRemove();
+          return;
         }
 
-        this.moveX.setValue(width)
+        this.moveX.setValue(width);
       }
-    })
+    });
 
     Animated.parallel([
       Animated.timing(this.opacity, {
@@ -61,7 +61,7 @@ class Post extends PureComponent {
       //   duration: 250,
       //   useNativeDriver: true
       // })
-    ]).start()
+    ]).start();
   }
 
   onRemove = () => {
@@ -71,18 +71,18 @@ class Post extends PureComponent {
         duration: 250,
         useNativeDriver: true
       })
-    ]).start(() => this.props.onDelete())
-  }
+    ]).start(() => this.props.onDelete());
+  };
 
   render() {
-    const { post, favorite, goToPost } = this.props
-    const to = width / 1.5
+    const { post, favorite, goToPost } = this.props;
+    const to = width / 1.5;
 
     let swipe = this.moveX.interpolate({
       inputRange: [0, to],
       outputRange: [-to, 0],
       extrapolate: 'clamp'
-    })
+    });
 
     return (
       <Animated.View
@@ -103,9 +103,7 @@ class Post extends PureComponent {
           onPress={goToPost}
           style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
         >
-          {(!post.read && !favorite) &&
-            <View style={styles.dot} />
-          }
+          {!post.read && !favorite && <View style={styles.dot} />}
 
           {favorite && Platform.OS == 'ios' && (
             <IonIcons name="ios-star" color="#F6E652" size={16} />
@@ -128,7 +126,7 @@ class Post extends PureComponent {
           </View>
         </TouchableOpacity>
       </Animated.View>
-    )
+    );
   }
 }
 
@@ -168,6 +166,6 @@ const styles = StyleSheet.create({
   arrow: {
     marginRight: 16
   }
-})
+});
 
-export default Post
+export default Post;

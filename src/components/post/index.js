@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  View,
-  Text,
-  StyleSheet
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Comments from '../comments';
 import { markReadPost } from 'rnPosts/src/actions/posts';
 import { getUser } from 'rnPosts/src/actions/users';
@@ -22,31 +18,36 @@ class Post extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.section}>
-          <Text style={styles.title}>Description</Text>
-          <Text style={styles.body}>{post.body}</Text>
-        </View>
+        {post && (
+          <View style={styles.section}>
+            <Text style={styles.title}>Description</Text>
+            <Text style={styles.body}>{post.body}</Text>
+          </View>
+        )}
 
-        <View style={styles.section}>
-          <Text style={styles.title}>User</Text>
-          <Text style={styles.userText}>{user.name}</Text>
-          <Text style={styles.userText}>{user.email}</Text>
-          <Text style={styles.userText}>{user.phone}</Text>
-          <Text style={styles.userText}>{user.website}</Text>
-        </View>
+        {user && (
+          <View style={styles.section}>
+            <Text style={styles.title}>User</Text>
+            <Text style={styles.userText}>{user.name}</Text>
+            <Text style={styles.userText}>{user.email}</Text>
+            <Text style={styles.userText}>{user.phone}</Text>
+            <Text style={styles.userText}>{user.website}</Text>
+          </View>
+        )}
 
         <View style={styles.commentsTitleContainer}>
           <Text style={styles.commentsTitle}>COMMENTS</Text>
         </View>
-        <Comments postId={post.id} />
+
+        {post && <Comments postId={post.id} />}
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   section: {
     padding: 8,
@@ -86,7 +87,7 @@ const stateMapToProps = (state, props) => {
 
   return {
     user
-  }
-}
+  };
+};
 
 export default connect(stateMapToProps)(Post);

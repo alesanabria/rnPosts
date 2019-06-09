@@ -32,7 +32,7 @@ class Tabs extends Component {
           </View>
 
           <View style={styles.contentContainer}>
-            {this.props.children.map((content, i) => {
+            {this.props.children && this.props.children.map((content, i) => {
               if(i == tab)  return content
             })}
           </View>

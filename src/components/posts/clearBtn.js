@@ -3,8 +3,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Platform,
-  SafeAreaView
+  Platform
 } from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 

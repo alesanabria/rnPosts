@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Platform, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 class Comment extends PureComponent {
 
@@ -8,7 +8,7 @@ class Comment extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.body}>{comment.body}</Text>
+        <Text style={styles.body}>{comment && comment.body}</Text>
       </View>
     )
   }
