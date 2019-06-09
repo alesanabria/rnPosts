@@ -1,4 +1,4 @@
-## RNPosts / Zemoga Mobile Tech - React native
+## RNPosts / React native
 
 ### Architecture
 
