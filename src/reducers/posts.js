@@ -1,37 +1,46 @@
-
 const initialState = {
   favorites: [],
   entities: []
-}
+};
 
 function Posts(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'SET_POSTS': {
-      return { ...state, entities: action.payload }
+      return { ...state, entities: action.payload };
     }
     case 'MARK_READ_POST': {
       return {
         ...state,
-        entities: state.entities.map(post => post.id == action.payload ? {...post, read: true} : post )
-      }
+        entities: state.entities.map(post =>
+          post.id == action.payload
+            ? { ...post, read: true }
+            : post
+        )
+      };
     }
     case 'REMOVE_POST': {
-      return { ...state, entities: state.entities.filter(post => post.id !== action.payload) }
+      return {
+        ...state,
+        entities: state.entities.filter(post => post.id !== action.payload)
+      };
     }
     case 'SET_FAVORITES': {
-      return { ...state, favorites: action.payload }
+      return { ...state, favorites: action.payload };
     }
     case 'ADD_FAVORITE_POST': {
-      return { ...state, favorites: state.favorites.concat([action.payload]) }
+      return { ...state, favorites: state.favorites.concat([action.payload]) };
     }
     case 'REMOVE_FAVORITE_POST': {
-      return { ...state, favorites: state.favorites.filter(id => id !== action.payload) }
+      return {
+        ...state,
+        favorites: state.favorites.filter(id => id !== action.payload)
+      };
     }
     case 'CLEAR_POSTS': {
-      return { ...state, entities: [] }
+      return { ...state, entities: [] };
     }
     case 'CLEAR_FAVORITES': {
-      return { ...state, favorites: [] }
+      return { ...state, favorites: [] };
     }
     default: {
       return state;

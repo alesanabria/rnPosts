@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet
-} from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import {
   getPosts,
   removePost,
   clearPosts,
   getFavorites
 } from 'rnPosts/src/actions/posts';
-import Post from './post';
+import Posts from './posts';
+import Favorites from './favorites';
 import ClearBtn from './clearBtn';
 import Tabs from './tabs';
 
-class Posts extends Component {
-
+class PostsContainer extends Component {
   state = {
     refs: [],
     canScroll: true
-  }
+  };
 
   componentDidMount() {
     this.props.dispatch(getPosts());
@@ -29,19 +25,19 @@ class Posts extends Component {
 
   handleClear = () => {
     this.props.dispatch(clearPosts());
-  }
+  };
 
-  goToPost = (post) => {
+  goToPost = post => {
     this.props.navigation.navigate({ routeName: 'Post', params: { post } });
-  }
+  };
 
-  handleDelete = (post) => {
+  handleDelete = post => {
     this.props.dispatch(removePost(post.id));
-  }
+  };
 
-  handleScroll = (canScroll) => {
+  handleScroll = canScroll => {
     this.setState({ canScroll });
-  }
+  };
 
   render() {
     const { posts, favorites, favoritesList } = this.props;
@@ -50,38 +46,26 @@ class Posts extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Tabs>
-          <FlatList
-            style={{ flex: 1 }}
-            data={posts}
-            keyExtractor={(item) => `${item.id}`}
-            renderItem={({ item }) =>
-              <Post
-                onMove={this.handleScroll}
-                onDelete={this.handleDelete.bind(null, item)}
-                goToPost={this.goToPost.bind(null, item)}
-                favorite={favorites.indexOf(item.id) != -1}
-                post={item}
-              />
-            }
-            scrollEnabled={canScroll}
+          <Posts
+            posts={posts}
+            favorites={favorites}
+            canScroll={canScroll}
+            handleScroll={this.handleScroll}
+            handleDelete={this.handleDelete}
+            goToPost={this.goToPost}
           />
-          <FlatList
-          style={{ flex: 1 }}
-          data={favoritesList}
-          keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) =>
-            <Post
-              goToPost={this.goToPost.bind(null, item)}
-              onDelete={this.handleDelete.bind(null, item)}
-              favorite={favorites.indexOf(item.id) != -1}
-              post={item}
-            />
-          }
-        />
+          <Favorites
+            favorites={favorites}
+            favoritesList={favoritesList}
+            canScroll={canScroll}
+            handleScroll={this.handleScroll}
+            handleDelete={this.handleDelete}
+            goToPost={this.goToPost}
+          />
         </Tabs>
         <ClearBtn onClear={this.handleClear} />
       </SafeAreaView>
-    )
+    );
   }
 }
 
@@ -92,15 +76,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const { entities, favorites } = state.posts;
-  const favoritesList = entities.filter(post => favorites.indexOf(post.id) != -1);
+  const favoritesList = entities.filter(
+    post => favorites.indexOf(post.id) != -1
+  );
 
   return {
     posts: entities,
     favorites,
     favoritesList
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps)(Posts);
+export default connect(mapStateToProps)(PostsContainer);
